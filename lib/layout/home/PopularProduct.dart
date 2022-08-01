@@ -1,14 +1,24 @@
 import 'package:bcc/components/home/ProductCard.dart';
+import 'package:bcc/providers/ListProduct.dart';
 import 'package:bcc/themes/AppColors.dart';
 import 'package:bcc/themes/AppText.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class PopularProduct extends StatelessWidget {
-  const PopularProduct({Key? key}) : super(key: key);
+class PopularProduct extends StatefulWidget {
+  PopularProduct({Key? key}) : super(key: key);
 
   @override
+  State<PopularProduct> createState() => _PopularProductState();
+}
+
+class _PopularProductState extends State<PopularProduct> {
+  @override
   Widget build(BuildContext context) {
+    var listProduct = Provider.of<ListProduct>(context);
+    var data = listProduct.products;
+
     return Column(
       children: [
         Padding(
@@ -37,7 +47,9 @@ class PopularProduct extends StatelessWidget {
                     style: AppText.body(),
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/see-all');
+                    },
                     style: ElevatedButton.styleFrom(
                       shape: CircleBorder(),
                       elevation: 0,
@@ -51,16 +63,24 @@ class PopularProduct extends StatelessWidget {
             ],
           ),
         ),
+        SizedBox(height: 16),
         Container(
           height: 185,
-          padding: EdgeInsets.symmetric(horizontal: 11),
+          padding: EdgeInsets.symmetric(horizontal: 8),
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
-              ...([1, 2, 3, 4, 5, 6].map((e) => ProductCard(e)).toList()),
+              ...(data.map((e) {
+                return Container(
+                  width: 160,
+                  padding: EdgeInsets.symmetric(horizontal: 4),
+                  child: ProductCard(e),
+                );
+              }).toList()),
             ],
           ),
-        )
+        ),
+        SizedBox(height: 16),
       ],
     );
   }

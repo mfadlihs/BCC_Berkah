@@ -1,5 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:bcc/components/showNotif.dart';
+import 'package:bcc/screen/Home.dart';
 import 'package:bcc/screen/SignUp.dart';
 import 'package:bcc/screen/Splash.dart';
 import 'package:bcc/themes/AppColors.dart';
@@ -7,7 +12,13 @@ import 'package:bcc/themes/AppText.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class SignInBox extends StatefulWidget {
   SignInBox({Key? key}) : super(key: key);
@@ -18,6 +29,56 @@ class SignInBox extends StatefulWidget {
 
 class _SignInBoxState extends State<SignInBox> {
   bool isChecked = false;
+  final navigator = Navigator();
+
+  final formKey = GlobalKey<FormState>();
+
+  String email = "";
+  String password = "";
+
+  handleSignin() async {
+    var prefs = await SharedPreferences.getInstance();
+
+    try {
+      var res = await http.post(
+        Uri.https("garbage-market-2022.herokuapp.com", "metadata/login"),
+        body: jsonEncode(
+          <String, String>{
+            "email": email,
+            "password": password,
+          },
+        ),
+      );
+
+      var token = await json.decode(res.body)['body']['token'];
+      await prefs.setString('token', '$token');
+
+      // showNotif("Berhasil login", context);
+      showTopSnackBar(
+        context,
+        CustomSnackBar.success(
+          message: "Berhasil Login, selamat berbelanja",
+        ),
+      );
+      Timer(Duration(seconds: 2), () {});
+
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        "/",
+        (route) => false,
+      );
+    } catch (e) {
+      print("error");
+      print(e);
+
+      showTopSnackBar(
+        context,
+        CustomSnackBar.error(
+          message: "Email/Password yang anda masukkan salah",
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +112,24 @@ class _SignInBoxState extends State<SignInBox> {
               ),
             ),
             Form(
+              key: formKey,
               child: Column(
                 children: [
                   Padding(
                     padding: EdgeInsets.only(bottom: 16),
                     child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter an email";
+                        }
+                        return null;
+                      },
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: (String? val) {
+                        setState(() {
+                          email = val!;
+                        });
+                      },
                       style: AppText.subtitle(),
                       decoration: InputDecoration(
                         prefixIcon: Icon(
@@ -76,6 +150,17 @@ class _SignInBoxState extends State<SignInBox> {
                     padding: EdgeInsets.only(bottom: 16),
                     child: TextFormField(
                       obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter password";
+                        }
+                        return null;
+                      },
+                      onChanged: (String? value) {
+                        setState(() {
+                          password = value!;
+                        });
+                      },
                       style: AppText.subtitle(),
                       decoration: InputDecoration(
                         prefixIcon: Icon(
@@ -172,7 +257,12 @@ class _SignInBoxState extends State<SignInBox> {
                   Padding(
                     padding: EdgeInsets.only(bottom: 20),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          showNotif("Login....", context);
+                          await handleSignin();
+                        }
+                      },
                       child: Text(
                         "Sign In",
                         style: AppText.title(),

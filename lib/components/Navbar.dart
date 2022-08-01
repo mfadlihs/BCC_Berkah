@@ -1,16 +1,29 @@
+import 'package:bcc/Function/getRoute.dart';
 import 'package:bcc/themes/AppColors.dart';
 import 'package:bcc/themes/AppText.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Navbar extends StatefulWidget {
-  Navbar({Key? key}) : super(key: key);
+  int index;
+  Navbar({Key? key, this.index = 0}) : super(key: key);
 
   @override
   State<Navbar> createState() => _NavbarState();
 }
 
 class _NavbarState extends State<Navbar> {
+  var Kotak = Container(
+    width: 20,
+    margin: EdgeInsets.only(top: 3),
+    height: 3,
+    decoration: BoxDecoration(
+      color: AppColor.textPrimary,
+      borderRadius: BorderRadius.circular(20),
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,6 +38,7 @@ class _NavbarState extends State<Navbar> {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
+          // Basket
           Positioned(
             top: -50,
             left: 0,
@@ -39,7 +53,11 @@ class _NavbarState extends State<Navbar> {
                     width: 10,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  if (getRoute(context) != "/basket") {
+                    Navigator.pushNamed(context, "/basket");
+                  }
+                },
                 child: Icon(
                   Icons.shopping_basket,
                   size: 32,
@@ -50,33 +68,48 @@ class _NavbarState extends State<Navbar> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              // Home
               MaterialButton(
                 shape: CircleBorder(),
-                onPressed: () {},
+                onPressed: () {
+                  if (getRoute(context) != "/") {
+                    Navigator.pushNamed(context, "/");
+                  }
+                },
                 minWidth: 10,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.home),
-                    Text(
-                      "Home",
-                      style: AppText.body(color: AppColor.textPrimary),
-                    ),
+                    widget.index == 1
+                        ? Kotak
+                        : Text(
+                            "Home",
+                            style: AppText.body(color: AppColor.textPrimary),
+                          ),
                   ],
                 ),
               ),
+
+              // Orders
               MaterialButton(
                 shape: CircleBorder(),
-                onPressed: () {},
+                onPressed: () {
+                  if (getRoute(context) != "/orders") {
+                    Navigator.pushNamed(context, "/orders");
+                  }
+                },
                 minWidth: 10,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.assignment),
-                    Text(
-                      "Orders",
-                      style: AppText.body(color: AppColor.textPrimary),
-                    ),
+                    widget.index == 2
+                        ? Kotak
+                        : Text(
+                            "Orders",
+                            style: AppText.body(color: AppColor.textPrimary),
+                          ),
                   ],
                 ),
               ),
@@ -92,33 +125,49 @@ class _NavbarState extends State<Navbar> {
                   ),
                 ],
               ),
+
+              // Whislist
               MaterialButton(
                 shape: CircleBorder(),
-                onPressed: () {},
+                onPressed: () {
+                  if (getRoute(context) != "/wishlist") {
+                    Navigator.pushNamed(context, "/wishlist");
+                  }
+                },
                 minWidth: 10,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.favorite),
-                    Text(
-                      "Whislist",
-                      style: AppText.body(color: AppColor.textPrimary),
-                    ),
+                    widget.index == 3
+                        ? Kotak
+                        : Text(
+                            "Wishlist",
+                            style: AppText.body(color: AppColor.textPrimary),
+                          ),
                   ],
                 ),
               ),
+
+              // Profile
               MaterialButton(
                 shape: CircleBorder(),
-                onPressed: () {},
+                onPressed: () {
+                  if (getRoute(context) != "/profile") {
+                    Navigator.pushNamed(context, "/profile");
+                  }
+                },
                 minWidth: 10,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.person),
-                    Text(
-                      "Profile",
-                      style: AppText.body(color: AppColor.textPrimary),
-                    ),
+                    widget.index == 4
+                        ? Kotak
+                        : Text(
+                            "Profile",
+                            style: AppText.body(color: AppColor.textPrimary),
+                          ),
                   ],
                 ),
               ),

@@ -1,14 +1,17 @@
 import 'package:bcc/components/home/StoreCard.dart';
+import 'package:bcc/providers/ListProduct.dart';
 import 'package:bcc/themes/AppColors.dart';
 import 'package:bcc/themes/AppText.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PopularStore extends StatelessWidget {
   const PopularStore({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var listProduct = Provider.of<ListProduct>(context);
     return Column(
       children: [
         Padding(
@@ -54,16 +57,7 @@ class PopularStore extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           child: Column(
-            children: [
-              StoreCard(),
-              StoreCard(),
-              StoreCard(),
-              StoreCard(),
-              StoreCard(),
-              StoreCard(),
-              StoreCard(),
-              StoreCard(),
-            ],
+            children: listProduct.toko.map((e) => StoreCard(e)).toList(),
           ),
         )
       ],

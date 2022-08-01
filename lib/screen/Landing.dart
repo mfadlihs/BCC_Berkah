@@ -33,21 +33,21 @@ class LandingScreen extends StatelessWidget {
               style: AppText.subtitle(),
             ),
             SizedBox(height: 40),
-            ClipRRect(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: AppColor.secondary1,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 25,
-                    vertical: 10,
-                  ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: AppColor.secondary1,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 25,
+                  vertical: 10,
                 ),
-                onPressed: () {},
-                child: Text(
-                  "NEXT",
-                  style: AppText.title(
-                    lineHeight: 1,
-                  ),
+              ),
+              onPressed: () {
+                Navigator.pushNamed(context, '/login');
+              },
+              child: Text(
+                "NEXT",
+                style: AppText.title(
+                  lineHeight: 1,
                 ),
               ),
             ),

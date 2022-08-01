@@ -1,10 +1,27 @@
+import 'package:bcc/api/token.dart';
 import 'package:bcc/layout/signup/SignUpBox.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    x() async {
+      var prefs = await SharedPreferences.getInstance();
+    }
+
+    checkToken() async {
+      if (await getToken() != null) {
+        return Navigator.pushNamedAndRemoveUntil(
+          context,
+          "/",
+          (route) => false,
+        );
+      }
+    }
+
+    checkToken();
     return Stack(
       children: [
         Image.asset(

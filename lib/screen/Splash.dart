@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bcc/themes/AppText.dart';
 import 'package:bcc/themes/AppColors.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +8,10 @@ import 'package:flutter/material.dart';
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Timer(Duration(seconds: 2), () {
+      Navigator.pushNamed(context, '/landing');
+    });
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -67,11 +73,6 @@ class SplashScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  // Container(
-                  //   width: 10,
-                  //   height: 10,
-                  //   color: AppColor.textPrimary,
-                  // ),
                 ],
               ),
             ),

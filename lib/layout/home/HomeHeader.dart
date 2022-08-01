@@ -1,3 +1,4 @@
+import 'package:bcc/components/Search.dart';
 import 'package:bcc/components/home/HomeCategory.dart';
 import 'package:bcc/themes/AppColors.dart';
 import 'package:bcc/themes/AppText.dart';
@@ -13,20 +14,8 @@ var HomeHeader = Container(
         "Find Your Need",
         style: AppText.header(),
       ),
-      TextField(
-        style: AppText.subtitle(),
-        decoration: InputDecoration(
-          prefixIcon: Icon(
-            Icons.search,
-            size: 18,
-          ),
-          isDense: true,
-          hintText: 'Try "Botol Plastik"',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(24),
-          ),
-          filled: true,
-        ),
+      Search(
+        hintText: 'Try "Botol Plastik"',
       ),
       SizedBox(height: 8),
       Wrap(

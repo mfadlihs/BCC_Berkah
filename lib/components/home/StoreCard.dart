@@ -1,10 +1,12 @@
+import 'package:bcc/class/Toko.dart';
 import 'package:bcc/themes/AppColors.dart';
 import 'package:bcc/themes/AppText.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StoreCard extends StatelessWidget {
-  const StoreCard({Key? key}) : super(key: key);
+  Toko data;
+  StoreCard(this.data, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +25,16 @@ class StoreCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Image.asset("images/store_icon.png"),
+                CircleAvatar(
+                  backgroundImage: AssetImage("images/toko/${data.id}.jpg"),
+                  radius: 20,
+                ),
                 SizedBox(width: 15),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Toko Botol Plastik",
+                      data.nama,
                       style: AppText.subtitle(),
                     ),
                     SizedBox(height: 4),
@@ -38,7 +43,7 @@ class StoreCard extends StatelessWidget {
                         RichText(
                           text: TextSpan(
                             text: "99+ ",
-                            style: AppText.desc(color: AppColor.primary),
+                            style: AppText.desc(color: AppColor.secondary2),
                             children: [
                               TextSpan(
                                 text: "Product",
@@ -51,10 +56,10 @@ class StoreCard extends StatelessWidget {
                         RichText(
                           text: TextSpan(
                             text: "• ",
-                            style: AppText.desc(color: AppColor.primary),
+                            style: AppText.desc(color: AppColor.secondary2),
                             children: [
                               TextSpan(
-                                text: "Surabaya",
+                                text: data.lokasi,
                                 style: AppText.desc(),
                               ),
                             ],
@@ -73,7 +78,9 @@ class StoreCard extends StatelessWidget {
                 ),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/detail-store', arguments: data);
+              },
               child: Text(
                 "Visit",
                 style: AppText.subtitle(),

@@ -3,23 +3,31 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProductImage extends StatelessWidget {
-  const ProductImage({Key? key}) : super(key: key);
+  int id;
+  ProductImage({Key? key, required this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
-          height: 355,
-          child: Image.asset(
-            "images/detailProduct/product.png",
-            fit: BoxFit.cover,
+        Hero(
+          tag: id,
+          child: Container(
+            height: 355,
+            width: double.infinity,
+            child: Image.asset(
+              "images/detailProduct/$id.jpg",
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         Positioned(
           top: 44,
           left: 16,
           child: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
             child: Container(
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(

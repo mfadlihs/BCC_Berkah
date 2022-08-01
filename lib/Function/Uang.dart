@@ -6,3 +6,8 @@ class Uang {
         .format(angka);
   }
 }
+
+uang(num angka) {
+  return NumberFormat.currency(locale: "id", symbol: "Rp ", decimalDigits: 0)
+      .format(angka);
+}

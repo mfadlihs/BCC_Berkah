@@ -1,10 +1,11 @@
-import 'package:bcc/Function/Product.dart';
 import 'package:bcc/Function/Uang.dart';
+import 'package:bcc/providers/ProviderDetail.dart';
 import 'package:bcc/themes/AppColors.dart';
 import 'package:bcc/themes/AppText.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class ProductBuy extends StatefulWidget {
   ProductBuy({
@@ -21,6 +22,8 @@ class _ProductBuyState extends State<ProductBuy> {
 
   @override
   Widget build(BuildContext context) {
+    var amount = Provider.of<ProviderDetail>(context, listen: true);
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Row(
@@ -33,6 +36,7 @@ class _ProductBuyState extends State<ProductBuy> {
                 ? () {
                     setState(() {
                       jumlah--;
+                      amount.removeAmount();
                     });
                   }
                 : null,
@@ -53,6 +57,7 @@ class _ProductBuyState extends State<ProductBuy> {
             onPressed: () {
               setState(() {
                 jumlah++;
+                amount.addAmount();
               });
             },
             icon: Icon(

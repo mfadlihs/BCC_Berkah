@@ -1,14 +1,17 @@
-import 'package:bcc/Function/Product.dart';
 import 'package:bcc/Function/Tes.dart';
+import 'package:bcc/class/Product.dart';
 import 'package:bcc/layout/detailProduct/ProductBuy.dart';
 import 'package:bcc/layout/detailProduct/ProductDesc.dart';
+import 'package:bcc/layout/detailProduct/ProductDetail.dart';
 import 'package:bcc/layout/detailProduct/ProductImage.dart';
 import 'package:bcc/layout/detailProduct/ProductNav.dart';
 import 'package:bcc/layout/detailProduct/ProductTitle.dart';
+import 'package:bcc/providers/ProviderDetail.dart';
 import 'package:bcc/themes/AppColors.dart';
 import 'package:bcc/themes/AppText.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DetailProductScreen extends StatefulWidget {
   DetailProductScreen({Key? key}) : super(key: key);
@@ -24,27 +27,43 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
     color: AppColor.secondary1,
   );
 
-  int angka = 1;
+  x() {
+    Navigator.pushNamed(
+      context,
+      "/",
+      arguments: Product(1, 1, 'w', 2, 'w', 2),
+    );
+  }
 
-  Product data = Product(harga: 625000);
+  int angka = 1;
 
   @override
   Widget build(BuildContext context) {
+    var amount = Provider.of<ProviderDetail>(context);
+
+    final data = ModalRoute.of(context)!.settings.arguments as Product;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ProductImage(),
-            ProductTitle(),
+            ProductImage(id: data.id),
+            ProductTitle(
+              data: data,
+            ),
             divider,
             ProductBuy(),
             divider,
-            ProductDescription(),
+            ProductDescription(
+              desc: data.desc,
+            ),
+            divider,
+            ProductDetail(),
           ],
         ),
       ),
-      bottomNavigationBar: ProductNavBar(),
+      bottomNavigationBar: ProductNavBar(data.harga),
     );
   }
 }

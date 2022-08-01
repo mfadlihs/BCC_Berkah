@@ -1,5 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:bcc/components/showNotif.dart';
 import 'package:bcc/screen/SignIn.dart';
 import 'package:bcc/screen/Splash.dart';
 import 'package:bcc/themes/AppColors.dart';
@@ -8,6 +12,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+
+import 'package:http/http.dart' as http;
 
 class SignUpBox extends StatefulWidget {
   SignUpBox({Key? key}) : super(key: key);
@@ -18,6 +24,48 @@ class SignUpBox extends StatefulWidget {
 
 class _SignUpBoxState extends State<SignUpBox> {
   bool isChecked = false;
+
+  final formKey = GlobalKey<FormState>();
+
+  // https://garbage-market-2022.herokuapp.com/metadata/register
+
+  String email = "";
+  String password = "";
+  String confirmPassword = "";
+
+  handleSignUp() async {
+    try {
+      var res = await http.post(
+        Uri.https("garbage-market-2022.herokuapp.com", "metadata/register"),
+        body: jsonEncode(
+          <String, String>{
+            "email": email,
+            "password": password,
+          },
+        ),
+      );
+
+      print(res.body);
+
+      var result = json.decode(res.body)['body'];
+
+      var token = result['token'];
+      print(result);
+      print(token);
+
+      showNotif("Berhasil Register", context);
+      Timer(Duration(seconds: 2), () {});
+
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        "/",
+        (route) => false,
+      );
+    } catch (e) {
+      print(e);
+      showNotif("Gagal Register", context);
+    }
+  }
 
   var header = [
     Padding(
@@ -55,11 +103,23 @@ class _SignUpBoxState extends State<SignUpBox> {
           children: [
             ...header,
             Form(
+              key: formKey,
               child: Column(
                 children: [
                   Padding(
                     padding: EdgeInsets.only(bottom: 16),
+                    // email
                     child: TextFormField(
+                      onChanged: (String? value) {
+                        setState(() {
+                          email = value!;
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter an email";
+                        }
+                      },
                       style: AppText.subtitle(),
                       decoration: InputDecoration(
                         prefixIcon: Icon(
@@ -78,7 +138,18 @@ class _SignUpBoxState extends State<SignUpBox> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(bottom: 16),
+                    // password
                     child: TextFormField(
+                      onChanged: (String? value) {
+                        setState(() {
+                          password = value!;
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter a password";
+                        }
+                      },
                       obscureText: true,
                       style: AppText.subtitle(),
                       decoration: InputDecoration(
@@ -98,9 +169,20 @@ class _SignUpBoxState extends State<SignUpBox> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(bottom: 16),
+                    // confirm password
                     child: TextFormField(
                       obscureText: true,
                       style: AppText.subtitle(),
+                      onChanged: (String? value) {
+                        setState(() {
+                          confirmPassword = value!;
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter a password";
+                        }
+                      },
                       decoration: InputDecoration(
                         prefixIcon: Icon(
                           Icons.lock,
@@ -196,9 +278,14 @@ class _SignUpBoxState extends State<SignUpBox> {
                   Padding(
                     padding: EdgeInsets.only(bottom: 20),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          showNotif("Register...", context);
+                          handleSignUp();
+                        }
+                      },
                       child: Text(
-                        "Sign In",
+                        "Sign Up",
                         style: AppText.title(),
                       ),
                       style: ButtonStyle(
