@@ -1,10 +1,14 @@
+import 'package:bcc/Function/Uang.dart';
 import 'package:bcc/themes/AppColors.dart';
 import 'package:bcc/themes/AppText.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PaymentNav extends StatefulWidget {
-  PaymentNav({Key? key}) : super(key: key);
+  int harga;
+  int amount;
+
+  PaymentNav(this.harga, this.amount, {Key? key}) : super(key: key);
 
   @override
   State<PaymentNav> createState() => _PaymentNavState();
@@ -30,7 +34,7 @@ class _PaymentNavState extends State<PaymentNav> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Rp 600.000",
+                "${uang(widget.harga)}",
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
@@ -38,7 +42,7 @@ class _PaymentNavState extends State<PaymentNav> {
               ),
               SizedBox(height: 2),
               Text(
-                "1 item",
+                "${widget.amount} item",
                 style: AppText.subtitle(
                   color: AppColor.textSecondary,
                 ),

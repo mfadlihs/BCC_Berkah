@@ -21,7 +21,9 @@ class _PaymentHeaderState extends State<PaymentHeader> {
           Row(
             children: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
                 style: ElevatedButton.styleFrom(
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   shape: CircleBorder(),

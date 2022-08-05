@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 
 class StoreCard extends StatelessWidget {
   Toko data;
-  StoreCard(this.data, {Key? key}) : super(key: key);
+  int id;
+  StoreCard(this.data, {Key? key, required this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class StoreCard extends StatelessWidget {
             Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: AssetImage("images/toko/${data.id}.jpg"),
+                  backgroundImage: AssetImage("images/toko/${id + 1}.jpg"),
                   radius: 20,
                 ),
                 SizedBox(width: 15),
@@ -34,7 +35,7 @@ class StoreCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      data.nama,
+                      data.nama_toko,
                       style: AppText.subtitle(),
                     ),
                     SizedBox(height: 4),
@@ -42,7 +43,7 @@ class StoreCard extends StatelessWidget {
                       children: [
                         RichText(
                           text: TextSpan(
-                            text: "99+ ",
+                            text: "${data.BarangJualans.length} ",
                             style: AppText.desc(color: AppColor.secondary2),
                             children: [
                               TextSpan(
@@ -59,7 +60,7 @@ class StoreCard extends StatelessWidget {
                             style: AppText.desc(color: AppColor.secondary2),
                             children: [
                               TextSpan(
-                                text: data.lokasi,
+                                text: data.alamat_toko,
                                 style: AppText.desc(),
                               ),
                             ],
@@ -79,7 +80,8 @@ class StoreCard extends StatelessWidget {
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
               onPressed: () {
-                Navigator.pushNamed(context, '/detail-store', arguments: data);
+                Navigator.pushNamed(context, '/detail-store',
+                    arguments: [data, id, data.ID]);
               },
               child: Text(
                 "Visit",

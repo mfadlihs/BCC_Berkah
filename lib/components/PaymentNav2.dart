@@ -1,10 +1,16 @@
+import 'package:bcc/Function/Uang.dart';
+import 'package:bcc/components/showNotif.dart';
+import 'package:bcc/providers/ProviderDelivery.dart';
 import 'package:bcc/themes/AppColors.dart';
 import 'package:bcc/themes/AppText.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PaymentNav2 extends StatefulWidget {
-  PaymentNav2({Key? key}) : super(key: key);
+  int totalHarga;
+  int jumlah;
+  PaymentNav2(this.totalHarga, this.jumlah, {Key? key}) : super(key: key);
 
   @override
   State<PaymentNav2> createState() => _PaymentNav2State();
@@ -13,6 +19,8 @@ class PaymentNav2 extends StatefulWidget {
 class _PaymentNav2State extends State<PaymentNav2> {
   @override
   Widget build(BuildContext context) {
+    var providerDelivery = Provider.of<ProviderDelivery>(context);
+
     return Container(
       height: 80,
       padding: EdgeInsets.symmetric(
@@ -30,7 +38,7 @@ class _PaymentNav2State extends State<PaymentNav2> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Rp 600.000",
+                "${uang((widget.totalHarga + providerDelivery.ongkir) * (1 - providerDelivery.diskon))}",
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
@@ -38,7 +46,7 @@ class _PaymentNav2State extends State<PaymentNav2> {
               ),
               SizedBox(height: 2),
               Text(
-                "1 item",
+                "${widget.jumlah} item",
                 style: AppText.subtitle(
                   color: AppColor.textSecondary,
                 ),
@@ -53,6 +61,12 @@ class _PaymentNav2State extends State<PaymentNav2> {
               ),
             ),
             onPressed: () {
+              if (providerDelivery.ongkir == 0) {
+                showAlert("Masukkan delivery terlebih dahulu", context,
+                    isFalse: true);
+
+                return;
+              }
               setState(() {
                 Navigator.pushNamed(context, '/payment-proof');
               });

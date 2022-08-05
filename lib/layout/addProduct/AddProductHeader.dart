@@ -1,9 +1,10 @@
 import 'package:bcc/themes/AppText.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
-class ProofHeader extends StatelessWidget {
-  const ProofHeader({Key? key}) : super(key: key);
+class AddProductHeader extends StatelessWidget {
+  const AddProductHeader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +23,13 @@ class ProofHeader extends StatelessWidget {
             Icons.navigate_before,
           ),
         ),
-        SizedBox(width: 8),
-        Text("Payment Proof", style: AppText.subheader()),
+        SizedBox(
+          width: 4,
+        ),
+        Text(
+          "Add Product",
+          style: AppText.subheader(),
+        ),
       ],
     );
   }

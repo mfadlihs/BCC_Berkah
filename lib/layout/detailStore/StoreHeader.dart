@@ -1,3 +1,4 @@
+import 'package:bcc/class/Toko.dart';
 import 'package:bcc/components/Search.dart';
 import 'package:bcc/themes/AppColors.dart';
 import 'package:bcc/themes/AppText.dart';
@@ -6,7 +7,8 @@ import 'package:flutter/material.dart';
 
 class StoreHeader extends StatefulWidget {
   int id;
-  StoreHeader(this.id, {Key? key}) : super(key: key);
+  Toko data;
+  StoreHeader(this.id, {Key? key, required this.data}) : super(key: key);
 
   @override
   State<StoreHeader> createState() => _StoreHeaderState();
@@ -15,6 +17,7 @@ class StoreHeader extends StatefulWidget {
 class _StoreHeaderState extends State<StoreHeader> {
   @override
   Widget build(BuildContext context) {
+    Toko data = widget.data;
     return Container(
       width: double.infinity,
       padding: EdgeInsets.only(
@@ -54,7 +57,7 @@ class _StoreHeaderState extends State<StoreHeader> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Toko Botol Plastik",
+                    data.nama_toko,
                     style: AppText.subtitle(color: Colors.black),
                   ),
                   SizedBox(height: 4),
@@ -62,7 +65,7 @@ class _StoreHeaderState extends State<StoreHeader> {
                     children: [
                       RichText(
                         text: TextSpan(
-                          text: "99+ ",
+                          text: "${data.BarangJualans.length}  ",
                           style: AppText.desc(color: AppColor.secondary2),
                           children: [
                             TextSpan(

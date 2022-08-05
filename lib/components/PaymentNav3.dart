@@ -1,10 +1,15 @@
+import 'package:bcc/Function/Uang.dart';
+import 'package:bcc/providers/ProviderDelivery.dart';
 import 'package:bcc/themes/AppColors.dart';
 import 'package:bcc/themes/AppText.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PaymentNav3 extends StatefulWidget {
-  PaymentNav3({Key? key}) : super(key: key);
+  int totalHarga;
+  int jumlah;
+  PaymentNav3(this.totalHarga, this.jumlah, {Key? key}) : super(key: key);
 
   @override
   State<PaymentNav3> createState() => _PaymentNav3State();
@@ -13,6 +18,8 @@ class PaymentNav3 extends StatefulWidget {
 class _PaymentNav3State extends State<PaymentNav3> {
   @override
   Widget build(BuildContext context) {
+    var providerDelivery = Provider.of<ProviderDelivery>(context);
+
     return Container(
       height: 80,
       padding: EdgeInsets.symmetric(
@@ -30,7 +37,7 @@ class _PaymentNav3State extends State<PaymentNav3> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Rp 600.000",
+                "${uang((widget.totalHarga + providerDelivery.ongkir) * (1 - providerDelivery.diskon))}",
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
@@ -38,7 +45,7 @@ class _PaymentNav3State extends State<PaymentNav3> {
               ),
               SizedBox(height: 2),
               Text(
-                "1 item",
+                "${widget.jumlah} item",
                 style: AppText.subtitle(
                   color: AppColor.textSecondary,
                 ),

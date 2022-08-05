@@ -1,7 +1,9 @@
+import 'package:bcc/providers/ProviderDelivery.dart';
 import 'package:bcc/themes/AppColors.dart';
 import 'package:bcc/themes/AppText.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Delivery extends StatefulWidget {
   Delivery({Key? key}) : super(key: key);
@@ -16,6 +18,9 @@ class DeliveryState extends State<Delivery> {
 
   @override
   Widget build(BuildContext context) {
+    var providerDelivery =
+        Provider.of<ProviderDelivery>(context, listen: false);
+
     return Container(
       height: 300,
       padding: EdgeInsets.all(20),
@@ -55,6 +60,13 @@ class DeliveryState extends State<Delivery> {
                     }
                     isReguler = isReguler ? false : true;
                   });
+                  if (isKargo) {
+                    providerDelivery.setOngkir(50000);
+                  } else if (isReguler) {
+                    providerDelivery.setOngkir(22000);
+                  } else {
+                    providerDelivery.setOngkir(0);
+                  }
                 },
                 child: Container(
                   padding: EdgeInsets.all(10),
@@ -88,6 +100,14 @@ class DeliveryState extends State<Delivery> {
                     // isKargo = !isKargo;
                     isKargo = isKargo ? false : true;
                   });
+
+                  if (isKargo) {
+                    providerDelivery.setOngkir(50000);
+                  } else if (isReguler) {
+                    providerDelivery.setOngkir(22000);
+                  } else {
+                    providerDelivery.setOngkir(0);
+                  }
                 },
                 child: Container(
                   padding: EdgeInsets.all(10),

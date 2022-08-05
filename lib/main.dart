@@ -1,8 +1,12 @@
 import 'package:bcc/layout/profile/PaymentMethod.dart';
 import 'package:bcc/layout/signin/SignInBox.dart';
 import 'package:bcc/providers/ListProduct.dart';
+import 'package:bcc/providers/ProviderBasket.dart';
+import 'package:bcc/providers/ProviderDelivery.dart';
 import 'package:bcc/providers/ProviderDetail.dart';
+import 'package:bcc/providers/ProviderOrder.dart';
 import 'package:bcc/providers/editProfile/ProviderEdit.dart';
+import 'package:bcc/screen/AddProduct.dart';
 import 'package:bcc/screen/Basket.dart';
 import 'package:bcc/screen/Coupons.dart';
 import 'package:bcc/screen/DetailProduct.dart';
@@ -20,7 +24,6 @@ import 'package:bcc/screen/SignIn.dart';
 import 'package:bcc/screen/SignUp.dart';
 import 'package:bcc/screen/Splash.dart';
 import 'package:bcc/screen/SuccessVerification.dart';
-import 'package:bcc/screen/WaitingPayment.dart';
 import 'package:bcc/screen/WaitingVerification.dart';
 import 'package:bcc/screen/Whislist.dart';
 import 'package:bcc/themes/AppColors.dart';
@@ -40,35 +43,47 @@ void main() {
       ChangeNotifierProvider<ProviderDetail>(
         create: (context) => ProviderDetail(),
       ),
+      ChangeNotifierProvider<ProviderBasket>(
+        create: (context) => ProviderBasket(),
+      ),
+      ChangeNotifierProvider<ProviderOrder>(
+        create: (context) => ProviderOrder(),
+      ),
+      ChangeNotifierProvider<ProviderDelivery>(
+        create: (context) => ProviderDelivery(),
+      )
     ], child: MyApp()),
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: appTheme,
-      // home: DetailStore(),
       initialRoute: '/splash',
       routes: <String, WidgetBuilder>{
+        '/login': (context) => SigninScreen(),
+        '/register': (context) => SignUpScreen(),
         '/': (context) => HomeScreen(),
         '/splash': (context) => SplashScreen(),
         '/landing': (context) => LandingScreen(),
-        '/register': (context) => SignUpScreen(),
-        '/login': (context) => SigninScreen(),
         '/detail-product': (context) => DetailProductScreen(),
         '/detail-store': (context) => DetailStore(),
         '/see-all': (context) => SeeAllScreen(),
         '/orders': (context) => OrderScreen(),
-        '/waiting-payment': (context) => WaitingPaymentScreen(),
         '/wishlist': (context) => WishListScreen(),
         '/profile': (context) => ProfileScreen(),
         '/edit-profile': (context) => EditProfileScreen(),
-        '/add-product': (context) => HomeScreen(),
+        '/add-product': (context) => AddProduct(),
         '/basket': (context) => BasketScreen(),
         '/payment': (context) => PaymentScreen(),
         '/coupons': (context) => CouponScreen(),

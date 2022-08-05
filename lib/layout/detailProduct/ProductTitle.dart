@@ -1,5 +1,6 @@
 import 'package:bcc/Function/Uang.dart';
 import 'package:bcc/class/Product.dart';
+import 'package:bcc/components/showNotif.dart';
 import 'package:bcc/providers/ListProduct.dart';
 import 'package:bcc/themes/AppColors.dart';
 import 'package:bcc/themes/AppText.dart';
@@ -22,6 +23,10 @@ class _ProductTitle extends State<ProductTitle> {
     var listProduct = Provider.of<ListProduct>(context);
     var _data = widget.data;
 
+    if (listProduct.checkFavorite(widget.data.ID)) {
+      isFavorite = true;
+    }
+
     return Padding(
       padding: EdgeInsets.only(
         top: 15,
@@ -35,19 +40,19 @@ class _ProductTitle extends State<ProductTitle> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                _data.type(),
+                _data.tipe_barang,
                 style: AppText.subtitle(
                   color: AppColor.textSecondary,
                 ),
               ),
               SizedBox(height: 8),
               Text(
-                _data.name,
+                _data.nama_barang,
                 style: AppText.header(),
               ),
               SizedBox(height: 8),
               Text(
-                uang(_data.harga),
+                uang(_data.harga_barang),
                 style: TextStyle(
                   fontSize: 20,
                   color: AppColor.secondary2,
@@ -59,10 +64,19 @@ class _ProductTitle extends State<ProductTitle> {
           MaterialButton(
             color: AppColor.secondary1,
             onPressed: () {
-              listProduct.favourite(_data.id);
-              setState(() {
-                isFavorite = true;
-              });
+              if (isFavorite) {
+                listProduct.unfavourite(widget.data);
+                setState(() {
+                  isFavorite = false;
+                });
+                showAlert("Menghapus dari wishlist", context);
+              } else {
+                listProduct.favourite(widget.data);
+                setState(() {
+                  isFavorite = true;
+                });
+                showAlert("Berhasil menambahkan ke wishlist", context);
+              }
             },
             shape: CircleBorder(),
             child: Padding(

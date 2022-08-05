@@ -1,6 +1,8 @@
+import 'package:bcc/providers/ProviderDelivery.dart';
 import 'package:bcc/themes/AppText.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CouponScreen extends StatefulWidget {
   CouponScreen({Key? key}) : super(key: key);
@@ -12,6 +14,8 @@ class CouponScreen extends StatefulWidget {
 class _CouponScreenState extends State<CouponScreen> {
   @override
   Widget build(BuildContext context) {
+    var providerDelivery = Provider.of<ProviderDelivery>(context);
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -39,12 +43,23 @@ class _CouponScreenState extends State<CouponScreen> {
                   ],
                 ),
                 SizedBox(height: 12),
-                ...[1, 2, 3, 4, 5].map((e) {
+                ...[
+                  1,
+                  2,
+                  3,
+                ].map((e) {
                   return Padding(
                     padding: EdgeInsets.only(bottom: 12),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Image.asset("images/coupon.png"),
+                    child: InkWell(
+                      onTap: () {
+                        print("wkwkwk");
+                        providerDelivery.setDiskon(0.3);
+                        Navigator.pop(context);
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Image.asset("images/coupon.png"),
+                      ),
                     ),
                   );
                 }).toList()

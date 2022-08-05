@@ -15,7 +15,7 @@ class SignUpScreen extends StatelessWidget {
       if (await getToken() != null) {
         return Navigator.pushNamedAndRemoveUntil(
           context,
-          "/",
+          "/edit-profile",
           (route) => false,
         );
       }

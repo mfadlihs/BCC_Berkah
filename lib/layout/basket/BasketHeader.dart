@@ -11,7 +11,7 @@ class BasketHeader extends StatefulWidget {
 }
 
 class _BasketHeaderState extends State<BasketHeader> {
-  bool isSelectedAll = false;
+  bool isSelectedAll = true;
 
   @override
   Widget build(BuildContext context) {

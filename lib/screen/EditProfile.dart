@@ -36,27 +36,30 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String email = "budihasan@gmail.com";
 
   handleNewUser(File? image, BuildContext context) async {
-    if (!checkComplete(image)) {
-      // showNotif("", context);
-      showNotif(
-          "${name == '' ? 'Nama,' : ''} ${address == '' ? 'Alamat,' : ''} ${date.text == '' ? 'Tanggal lahir,' : ''} ${image == null ? 'Foto Profil,' : ''} masih kosong",
-          context);
-      return;
-    }
+    // if (!checkComplete(image)) {
+    //   // showNotif("", context);
+    //   showNotif(
+    //       "${name == '' ? 'Nama,' : ''} ${address == '' ? 'Alamat,' : ''} ${date.text == '' ? 'Tanggal lahir,' : ''} ${image == null ? 'Foto Profil,' : ''} masih kosong",
+    //       context);
+    //   return;
+    // }
 
-    var token = await getToken();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String token = prefs.getString('token')!;
 
     try {
-      var request = await http.MultipartRequest(
-          'POST', Uri.https(baseUrl, "user/newuser"));
+      var request =
+          http.MultipartRequest('POST', Uri.https(baseUrl, "user/newuser"));
 
       request.headers['Authorization'] = 'Bearer $token';
-      request.fields['name'] = name;
+      request.fields['nama'] = name;
       request.fields['tanggal_lahir'] = date.text;
       request.fields['gender'] = gender!;
       request.fields['alamat'] = address;
 
       var picture = await http.MultipartFile.fromPath("file", image!.path);
+      print(image.path);
 
       request.files.add(picture);
 
@@ -64,6 +67,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       var responsed = await http.Response.fromStream(response);
 
       final responseData = json.decode(responsed.body);
+
+      print(responseData);
     } catch (e) {
       print("error");
       print(e);
@@ -250,36 +255,36 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     SizedBox(height: 12),
 
                     // Store name
-                    // Text(
-                    //   "Store Name",
-                    //   style: AppText.subtitle(),
-                    // ),
-                    // SizedBox(height: 8),
-                    // TextField(
-                    //   onChanged: (String value) {
-                    //     setState(() {
-                    //       storeName = value;
-                    //     });
-                    //   },
-                    //   decoration: styleInput("Toko Botol Plastik"),
-                    // ),
-                    // SizedBox(height: 12),
+                    Text(
+                      "Store Name",
+                      style: AppText.subtitle(),
+                    ),
+                    SizedBox(height: 8),
+                    TextField(
+                      onChanged: (String value) {
+                        setState(() {
+                          storeName = value;
+                        });
+                      },
+                      decoration: styleInput("Toko Botol Plastik"),
+                    ),
+                    SizedBox(height: 12),
 
                     // Store Location
-                    // Text(
-                    //   "Store Location",
-                    //   style: AppText.subtitle(),
-                    // ),
-                    // SizedBox(height: 8),
-                    // TextField(
-                    //   onChanged: (String value) {
-                    //     setState(() {
-                    //       storeLocation = value;
-                    //     });
-                    //   },
-                    //   decoration: styleInput("Surabaya"),
-                    // ),
-                    // SizedBox(height: 12),
+                    Text(
+                      "Store Location",
+                      style: AppText.subtitle(),
+                    ),
+                    SizedBox(height: 8),
+                    TextField(
+                      onChanged: (String value) {
+                        setState(() {
+                          storeLocation = value;
+                        });
+                      },
+                      decoration: styleInput("Surabaya"),
+                    ),
+                    SizedBox(height: 12),
                   ],
                 ),
               ),
@@ -302,7 +307,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                       ),
                       onPressed: () {
-                        // handleNewUser(profilePhoto.image, context);
+                        handleNewUser(profilePhoto.image, context);
                         handleNewToko(context);
                       },
                       child: Text(

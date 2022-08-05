@@ -3,20 +3,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProductImage extends StatelessWidget {
-  int id;
-  ProductImage({Key? key, required this.id}) : super(key: key);
+  String link_foto;
+  int ID;
+  ProductImage({Key? key, required this.link_foto, required this.ID})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Hero(
-          tag: id,
+          tag: ID,
           child: Container(
             height: 355,
             width: double.infinity,
-            child: Image.asset(
-              "images/detailProduct/$id.jpg",
+            child: Image.network(
+              link_foto,
               fit: BoxFit.cover,
             ),
           ),

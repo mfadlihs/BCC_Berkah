@@ -1,3 +1,4 @@
+import 'package:bcc/class/User.dart';
 import 'package:bcc/themes/AppColors.dart';
 import 'package:bcc/themes/AppText.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProfileStore extends StatelessWidget {
-  const ProfileStore({Key? key}) : super(key: key);
+  User data;
+  ProfileStore(this.data, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class ProfileStore extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Toko Botol Plastik",
+                    data.nama_toko,
                     style: AppText.title(),
                   ),
                   SizedBox(height: 4),
@@ -57,7 +59,7 @@ class ProfileStore extends StatelessWidget {
                           style: AppText.desc(color: AppColor.secondary2),
                           children: [
                             TextSpan(
-                              text: "Surabaya",
+                              text: data.alamat_toko,
                               style: AppText.desc(
                                 color: AppColor.gray,
                               ),
@@ -129,28 +131,33 @@ class ProfileStore extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.add_circle,
-                    color: AppColor.textPrimary,
-                  ),
-                  SizedBox(width: 9),
-                  Text(
-                    "Add Product",
-                    style: AppText.subtitle(),
-                  ),
-                ],
-              ),
-              Icon(
-                Icons.navigate_next,
-                color: AppColor.secondary2,
-                size: 20,
-              ),
-            ],
+          InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, "/add-product");
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.add_circle,
+                      color: AppColor.textPrimary,
+                    ),
+                    SizedBox(width: 9),
+                    Text(
+                      "Add Product",
+                      style: AppText.subtitle(),
+                    ),
+                  ],
+                ),
+                Icon(
+                  Icons.navigate_next,
+                  color: AppColor.secondary2,
+                  size: 20,
+                ),
+              ],
+            ),
           ),
         ],
       ),

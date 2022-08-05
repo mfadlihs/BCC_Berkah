@@ -1,3 +1,4 @@
+import 'package:bcc/class/Product.dart';
 import 'package:bcc/class/Toko.dart';
 import 'package:bcc/components/home/ProductCard.dart';
 import 'package:bcc/providers/ListProduct.dart';
@@ -18,6 +19,8 @@ class StoreContent extends StatefulWidget {
 class _StoreContentState extends State<StoreContent> {
   @override
   Widget build(BuildContext context) {
+    Toko data = widget.data;
+
     var listProduct = Provider.of<ListProduct>(context);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -37,9 +40,8 @@ class _StoreContentState extends State<StoreContent> {
             crossAxisSpacing: 8,
             crossAxisCount: 2,
             children: [
-              // ...listProduct.products.map((e) => ProductCard(e)).toList(),
               ...listProduct.products
-                  .where((element) => element.idToko == widget.data.id)
+                  .where((element) => element.id_toko_sampah == data.ID)
                   .map((e) => ProductCard(e))
                   .toList(),
             ],

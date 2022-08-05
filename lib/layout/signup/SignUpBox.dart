@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:bcc/api/token.dart';
 import 'package:bcc/components/showNotif.dart';
 import 'package:bcc/screen/SignIn.dart';
 import 'package:bcc/screen/Splash.dart';
@@ -14,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class SignUpBox extends StatefulWidget {
   SignUpBox({Key? key}) : super(key: key);
@@ -53,12 +56,19 @@ class _SignUpBoxState extends State<SignUpBox> {
       print(result);
       print(token);
 
-      showNotif("Berhasil Register", context);
+      showTopSnackBar(
+        context,
+        CustomSnackBar.success(
+          message: "Berhasil Register, isi data terlebih dahulu yaa",
+        ),
+      );
       Timer(Duration(seconds: 2), () {});
+
+      await setToken(token);
 
       Navigator.pushNamedAndRemoveUntil(
         context,
-        "/",
+        "/edit-profile",
         (route) => false,
       );
     } catch (e) {

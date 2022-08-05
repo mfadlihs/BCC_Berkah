@@ -1,10 +1,13 @@
+import 'package:bcc/class/User.dart';
 import 'package:bcc/themes/AppColors.dart';
 import 'package:bcc/themes/AppText.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({Key? key}) : super(key: key);
+  User data;
+
+  ProfileHeader(this.data, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,21 +18,26 @@ class ProfileHeader extends StatelessWidget {
         children: [
           Row(
             children: [
-              Image.asset(
-                "images/profile_icon.png",
-                width: 56,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: Image.network(
+                  data.link_foto,
+                  width: 56,
+                  height: 56,
+                  fit: BoxFit.cover,
+                ),
               ),
               SizedBox(width: 16),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Gama User",
+                    data.nama,
                     style: AppText.title(),
                   ),
                   SizedBox(height: 4),
                   Text(
-                    "gamauser@gmail.com",
+                    data.email,
                     style: AppText.body(color: AppColor.textSecondary),
                   ),
                 ],

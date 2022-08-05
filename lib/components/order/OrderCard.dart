@@ -1,3 +1,5 @@
+import 'package:bcc/Function/Uang.dart';
+import 'package:bcc/class/Product.dart';
 import 'package:bcc/components/order/OrderStatus.dart';
 import 'package:bcc/themes/AppColors.dart';
 import 'package:bcc/themes/AppText.dart';
@@ -5,7 +7,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class OrderCard extends StatefulWidget {
-  OrderCard({Key? key}) : super(key: key);
+  Product data;
+  int amount;
+  OrderCard(this.data, this.amount, {Key? key}) : super(key: key);
 
   @override
   State<OrderCard> createState() => _OrderCardState();
@@ -53,7 +57,7 @@ class _OrderCardState extends State<OrderCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "2 Juli 2022",
+                "05 Agustus 2022",
                 style: AppText.desc(color: Colors.black),
               ),
               OrderStatus(
@@ -72,8 +76,8 @@ class _OrderCardState extends State<OrderCard> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  "images/product_icon.png",
+                child: Image.network(
+                  widget.data.link_foto,
                   width: 42,
                 ),
               ),
@@ -82,12 +86,12 @@ class _OrderCardState extends State<OrderCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Biji Plastik 25 kg",
+                    widget.data.nama_barang,
                     style: AppText.subtitle(),
                   ),
                   SizedBox(height: 4),
                   Text(
-                    "1 item",
+                    "${widget.amount} item",
                     style: AppText.desc(),
                   ),
                 ],
@@ -107,7 +111,7 @@ class _OrderCardState extends State<OrderCard> {
                   ),
                   SizedBox(height: 3),
                   Text(
-                    "Rp 625.000",
+                    "${uang(widget.amount * widget.data.harga_barang)}",
                     style: AppText.subtitle(),
                   ),
                 ],

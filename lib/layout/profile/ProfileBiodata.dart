@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:bcc/class/User.dart';
 import 'package:bcc/components/profile/BiodataBox.dart';
 import 'package:bcc/themes/AppColors.dart';
 import 'package:bcc/themes/AppText.dart';
@@ -6,7 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProfileBiodata extends StatefulWidget {
-  ProfileBiodata({Key? key}) : super(key: key);
+  User data;
+  ProfileBiodata(this.data, {Key? key}) : super(key: key);
 
   @override
   State<ProfileBiodata> createState() => _ProfileBiodataState();
@@ -15,6 +19,8 @@ class ProfileBiodata extends StatefulWidget {
 class _ProfileBiodataState extends State<ProfileBiodata> {
   @override
   Widget build(BuildContext context) {
+    User data = widget.data;
+
     return Padding(
       padding: EdgeInsets.all(16),
       child: Column(
@@ -29,7 +35,8 @@ class _ProfileBiodataState extends State<ProfileBiodata> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, "/edit-profile");
+                  Navigator.pushNamed(context, "/edit-profile",
+                      arguments: data);
                 },
                 child: FaIcon(
                   FontAwesomeIcons.edit,
@@ -44,22 +51,22 @@ class _ProfileBiodataState extends State<ProfileBiodata> {
             "Name",
             style: AppText.subtitle(),
           ),
-          BiodataBox(text: "Gama User"),
+          BiodataBox(text: "${data.nama}"),
           Text(
             "Date of Birth",
             style: AppText.subtitle(),
           ),
-          BiodataBox(text: "1 Januari 1990"),
+          BiodataBox(text: "${data.tanggal_lahir}"),
+          Text(
+            "Address",
+            style: AppText.subtitle(),
+          ),
+          BiodataBox(text: "${data.alamat}"),
           Text(
             "Gender",
             style: AppText.subtitle(),
           ),
-          BiodataBox(text: "Pria"),
-          Text(
-            "Email",
-            style: AppText.subtitle(),
-          ),
-          BiodataBox(text: "gamauser@gmail.com"),
+          BiodataBox(text: "${data.gender}"),
         ],
       ),
     );

@@ -10,3 +10,8 @@ Future setToken(String value) async {
   var prefs = await SharedPreferences.getInstance();
   prefs.setString('token', value);
 }
+
+removeToken() async {
+  var prefs = await SharedPreferences.getInstance();
+  prefs.remove('token');
+}

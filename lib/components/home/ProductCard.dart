@@ -1,21 +1,41 @@
 import 'package:bcc/Function/Uang.dart';
 import 'package:bcc/class/Product.dart';
+import 'package:bcc/components/showNotif.dart';
+import 'package:bcc/providers/ListProduct.dart';
 import 'package:bcc/themes/AppColors.dart';
 import 'package:bcc/themes/AppText.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends StatefulWidget {
   Product data;
 
-  ProductCard(this.data);
+  ProductCard(this.data, {Key? key}) : super(key: key);
 
+  @override
+  State<ProductCard> createState() => _ProductCardState(data);
+}
+
+class _ProductCardState extends State<ProductCard> {
   void navigate(BuildContext context) {
     Navigator.pushNamed(context, '/detail-product', arguments: data);
   }
 
+  bool isFavorite = false;
+
+  Product data;
+
+  _ProductCardState(this.data);
+
   @override
   Widget build(BuildContext context) {
+    var listProduct = Provider.of<ListProduct>(context, listen: false);
+
+    if (listProduct.checkFavorite(data.ID)) {
+      isFavorite = true;
+    }
+
     return InkWell(
       onTap: () {
         navigate(context);
@@ -36,9 +56,9 @@ class ProductCard extends StatelessWidget {
           child: Stack(
             children: [
               Hero(
-                tag: data.id,
-                child: Image.asset(
-                  "images/detailProduct/${data.id}.jpg",
+                tag: data.ID,
+                child: Image.network(
+                  data.link_foto,
                   fit: BoxFit.cover,
                   width: double.infinity,
                   height: double.infinity,
@@ -65,15 +85,15 @@ class ProductCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            data.type(),
+                            data.tipe_barang,
                             style: AppText.desc(),
                           ),
                           Text(
-                            data.name,
+                            data.nama_barang,
                             style: AppText.body(),
                           ),
                           Text(
-                            uang(data.harga),
+                            uang(data.harga_barang),
                             style: AppText.body(color: AppColor.primary),
                           ),
                         ],
@@ -90,7 +110,22 @@ class ProductCard extends StatelessWidget {
                 top: 12,
                 right: 12,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    // print('wkwkw');
+                    if (isFavorite) {
+                      listProduct.unfavourite(data);
+                      setState(() {
+                        isFavorite = false;
+                      });
+                      showAlert("Menghapus dari wishlist", context);
+                    } else {
+                      listProduct.favourite(data);
+                      setState(() {
+                        isFavorite = true;
+                      });
+                      showAlert("Berhasil menambahkan ke wishlist", context);
+                    }
+                  },
                   child: Container(
                     padding: EdgeInsets.all(3),
                     decoration: BoxDecoration(
@@ -98,7 +133,7 @@ class ProductCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(100),
                     ),
                     child: Icon(
-                      Icons.favorite_border,
+                      isFavorite ? Icons.favorite : Icons.favorite_border,
                       color: Colors.red,
                       size: 12,
                     ),

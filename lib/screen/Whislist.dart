@@ -1,6 +1,7 @@
 import 'package:bcc/components/Navbar.dart';
 import 'package:bcc/components/Search.dart';
 import 'package:bcc/components/home/ProductCard.dart';
+import 'package:bcc/providers/ListProduct.dart';
 import 'package:bcc/themes/AppText.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,8 @@ class WishListScreen extends StatefulWidget {
 class _WishListScreenState extends State<WishListScreen> {
   @override
   Widget build(BuildContext context) {
+    var listProduct = Provider.of<ListProduct>(context, listen: false);
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -27,7 +30,7 @@ class _WishListScreenState extends State<WishListScreen> {
                 Search(hintText: "Search on Whislist"),
                 SizedBox(height: 16),
                 Text(
-                  "6 Products",
+                  "${listProduct.favourites.length} Products",
                   style: AppText.title(),
                 ),
                 SizedBox(height: 8),
@@ -39,9 +42,11 @@ class _WishListScreenState extends State<WishListScreen> {
                   mainAxisSpacing: 8,
                   crossAxisSpacing: 8,
                   padding: EdgeInsets.zero,
-                  // children: [
-                  //   ...listProduct.products.map((e) => ProductCard(e)).toList(),
-                  // ],
+                  children: [
+                    ...listProduct.favourites
+                        .map((e) => ProductCard(e))
+                        .toList(),
+                  ],
                 )
               ],
             ),
